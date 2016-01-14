@@ -6,10 +6,7 @@ import (
 )
 
 func main() {
-	s, sep := "", ""
-	for _, arg := range os.Args[1:] {
-		s += sep + arg
-		sep = " "
+	for i, arg := range os.Args[1:] {
+		fmt.Println(i+1, arg) // Use i+1 to adjust for os.Args[1:]
 	}
-	fmt.Println(s)
 }
