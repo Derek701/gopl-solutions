@@ -11,15 +11,21 @@ import (
 )
 
 func main() {
+	out, err := os.OpenFile("out.txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	if err != nil {
+		fmt.Println("error", err)
+		return
+	}
 	start := time.Now()
 	ch := make(chan string)
 	for _, url := range os.Args[1:] {
 		go fetch(url, ch) // start a goroutine
 	}
 	for range os.Args[1:] {
-		fmt.Println(<-ch) // receive from channel ch
+		io.WriteString(out, <-ch) // receive from channel ch
 	}
-	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
+	io.WriteString(out,
+		fmt.Sprintf("%.2fs elapsed\r\n\r\n", time.Since(start).Seconds()))
 }
 
 func fetch(url string, ch chan<- string) {
@@ -37,5 +43,5 @@ func fetch(url string, ch chan<- string) {
 		return
 	}
 	secs := time.Since(start).Seconds()
-	ch <- fmt.Sprintf("%.2fs  %7d  %s", secs, nbytes, url)
+	ch <- fmt.Sprintf("%.2fs  %7d  %s\r\n", secs, nbytes, url)
 }
