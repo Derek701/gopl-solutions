@@ -10,6 +10,7 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -26,31 +27,40 @@ func main() {
 	// Thanks to Randall McPherson for pointing out the omission.
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		lissajous(w)
-	}
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
-func lissajous(out io.Writer) {
-	const (
-		cycles  = 5     // number of complete x oscillator revolutions
-		res     = 0.001 // angular resolution
-		size    = 100   // image canvas covers [-size..+size]
-		nframes = 64    // number of animation frames
-		delay   = 8     // delay between frames in 10ms units
-	)
+func handler(w http.ResponseWriter, r *http.Request) {
+	params := make(map[string]int)
+	params["cycles"] = 5   // number of complete x oscillator revolutions
+	params["size"] = 100   // image canvas covers [-size..+size]
+	params["nframes"] = 64 // number of animation frames
+	params["delay"] = 8    // delay between frames in 10ms units
+	for param, _ := range params {
+		if r.FormValue(param) != "" {
+			params[param], _ = strconv.Atoi(r.FormValue(param))
+		}
+	}
+	lissajous(w, params)
+}
+
+func lissajous(out io.Writer, params map[string]int) {
+	cycles := params["cycles"]
+	res := 0.001 // angular resolution
+	size := params["size"]
+	nframes := params["nframes"]
+	delay := params["delay"]
 	freq := rand.Float64() * 3.0 // relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
 	for i := 0; i < nframes; i++ {
 		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, palette)
-		for t := 0.0; t < cycles*2*math.Pi; t += res {
+		for t := 0.0; t < float64(cycles)*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
+			img.SetColorIndex(size+int(x*float64(size)+0.5), size+int(y*float64(size)+0.5),
 				blackIndex)
 		}
 		phase += 0.1
