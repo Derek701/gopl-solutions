@@ -30,4 +30,4 @@ func BenchmarkPopCountByClearing(b *testing.B) {
 // $ go test -bench=.
 // BenchmarkPopCount-4                  200000000         6.90 ns/op
 // BenchmarkPopCount2-4                 100000000        19.0 ns/op
-// BenchmarkPopCountByClearing          50000000         31.4 ns/op
+// BenchmarkPopCountByClearing-4        50000000         31.4 ns/op
