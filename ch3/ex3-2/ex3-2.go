@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 const (
@@ -49,6 +50,20 @@ func corner(i, j int) (float64, float64) {
 }
 
 func f(x, y float64) float64 {
+	if len(os.Args) > 1 { // process a command-line argument for shape
+		switch os.Args[1] {
+		case "eggbox":
+			x = math.Abs(float64(int(x*10)%50)) / 10
+			y = math.Abs(float64(int(y*10)%50)) / 10
+			return 0.04 * ((x-2.5)*(x-2.5) + (y-2.5)*(y-2.5))
+		case "moguls":
+			x = math.Abs(float64(int(x*8)%30)) / 14
+			y = math.Abs(float64(int(y*8)%30)) / 14
+			return 0.04 * ((x-1.5)*(x-1.5) - (y-1.5)*(y-1.5))
+		case "saddle":
+			return 0.5 * (y*y/64 - x*x/128)
+		}
+	}
 	r := math.Hypot(x, y) // distance from (0,0)
 	return math.Sin(r) / r
 }
