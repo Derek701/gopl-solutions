@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-var palette = []color.Color{color.Black, color.RGBA{0x00, 0x80, 0x00, 0x01}}
+var palette = []color.Color{color.Black, color.RGBA{0x00, 0x80, 0x00, 0xFF}}
 
 const (
 	whiteIndex = 0 // first color in palette
