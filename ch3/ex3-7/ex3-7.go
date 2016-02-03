@@ -34,12 +34,36 @@ func main() {
 //    = z - (z^4 - 1) / (4 * z^3)
 //    = z - (z - 1/z^3) / 4
 func newton(z complex128) color.Color {
+	var quadrant int
+	if real(z) > 0 {
+		if imag(z) < 0 {
+			quadrant = 1
+		} else {
+			quadrant = 4
+		}
+	} else {
+		if imag(z) < 0 {
+			quadrant = 2
+		} else {
+			quadrant = 3
+		}
+	}
 	const iterations = 37
 	const contrast = 7
 	for i := uint8(0); i < iterations; i++ {
 		z -= (z - 1/(z*z*z)) / 4
 		if cmplx.Abs(z*z*z*z-1) < 1e-6 {
-			return color.Gray{255 - contrast*i}
+			t := contrast * i
+			switch quadrant {
+			case 1:
+				return color.RGBA{0xB0 - t, 0x00, 0x00, 0xFF}
+			case 2:
+				return color.RGBA{0xB0 - t, 0xB0 - t, 0x00, 0xFF}
+			case 3:
+				return color.RGBA{0x00, 0x00, 0xB0 - t, 0xFF}
+			case 4:
+				return color.RGBA{0xB0 - t, 0x00, 0xB0 - t, 0xFF}
+			}
 		}
 	}
 	return color.Black
