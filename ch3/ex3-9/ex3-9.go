@@ -1,20 +1,41 @@
-// Mandelbrot emits a PNG image of the Mandelbrot fractal.
+// Fractal emits a PNG image of a specified fractal (default: Mandelbrot).
 package main
 
 import (
 	"image"
 	"image/color"
 	"image/png"
+	"log"
 	"math/cmplx"
-	"os"
+	"net/http"
+	"strconv"
 )
 
-func main() {
-	const (
-		xmin, ymin, xmax, ymax = -2, -2, +2, +2
-		width, height          = 1024, 1024
-	)
+const (
+	width, height = 1024, 1024
+)
 
+var xmin, ymin, xmax, ymax float64
+
+func main() {
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	xmax, ymax = +2, +2
+	if r.FormValue("x") != "" {
+		xmax, _ = strconv.ParseFloat(r.FormValue("x"), 64)
+	}
+	if r.FormValue("y") != "" {
+		ymax, _ = strconv.ParseFloat(r.FormValue("y"), 64)
+	}
+	if r.FormValue("zoom") != "" {
+		zoom, _ := strconv.ParseFloat(r.FormValue("zoom"), 64)
+		xmax /= zoom
+		ymax /= zoom
+	}
+	xmin, ymin = -xmax, -ymax
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
@@ -22,10 +43,23 @@ func main() {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
 			// Image point (px, py) represents complex value z.
-			img.Set(px, py, mandelbrot(z))
+			img.Set(px, py, fractal(r.FormValue("f"), z))
 		}
 	}
-	png.Encode(os.Stdout, img) // NOTE: ignoring errors
+	png.Encode(w, img) // NOTE: ignoring errors
+}
+
+func fractal(f string, z complex128) color.Color {
+	switch f {
+	case "acos":
+		return acos(z)
+	case "sqrt":
+		return sqrt(z)
+	case "newton":
+		return newton(z)
+	default:
+		return mandelbrot(z)
+	}
 }
 
 func mandelbrot(z complex128) color.Color {
