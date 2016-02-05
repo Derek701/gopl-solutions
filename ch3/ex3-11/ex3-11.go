@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -13,12 +14,20 @@ func main() {
 	}
 }
 
-// comma inserts commas in a non-negative decimal integer string.
+// comma inserts commas in a decimal integer or floating-point string.
 func comma(s string) string {
 	var buf bytes.Buffer
+	var dec string
 	n := len(s)
-	if n <= 3 {
-		return s
+	if s[0] == '-' || s[0] == '+' {
+		n--
+		buf.WriteByte(s[0])
+		s = s[1:]
+	}
+	if dot := strings.LastIndexByte(s, '.'); dot >= 0 {
+		n -= len(s[dot:])
+		dec = s[dot:]
+		s = s[:dot]
 	}
 	commaPos := n % 3
 	if commaPos == 0 {
@@ -31,5 +40,5 @@ func comma(s string) string {
 		}
 		buf.WriteByte(s[i])
 	}
-	return buf.String()
+	return buf.String() + dec
 }
