@@ -7,8 +7,8 @@ import (
 	"unicode"
 )
 
-// IsAnagram reports whether two strings are anagrams of each other.
-func IsAnagram(s1, s2 string) bool {
+// AreAnagrams reports whether two strings are anagrams of each other.
+func AreAnagrams(s1, s2 string) bool {
 	s1, s2 = strings.TrimSpace(s1), strings.TrimSpace(s2)
 	if s1 == s2 {
 		return false // A string is not an anagram of itself.
