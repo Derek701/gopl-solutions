@@ -16,13 +16,13 @@ func IsAnagram(s1, s2 string) bool {
 	counts1 := make(map[rune]int)
 	for _, r := range s1 {
 		if unicode.IsLetter(r) {
-			counts1[r]++
+			counts1[unicode.ToLower(r)]++
 		}
 	}
 	counts2 := make(map[rune]int)
 	for _, r := range s2 {
 		if unicode.IsLetter(r) {
-			counts2[r]++
+			counts2[unicode.ToLower(r)]++
 		}
 	}
 	return reflect.DeepEqual(counts1, counts2)
