@@ -18,6 +18,10 @@ func reverse(s []int) {
 
 // rotate rotates a slice of ints in place by p elements to the right or left.
 func rotate(s []int, p int, r bool) {
+	if len(s) == 0 || p == 0 { // check for no rotation
+		return
+	}
+	p %= len(s) // skip unnecessary complete rotations and keep p in-bounds
 	if r {
 		reverse(s)
 	}
