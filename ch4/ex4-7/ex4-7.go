@@ -3,14 +3,16 @@ package main
 import "fmt"
 
 func main() {
-	a := [...]int{0, 1, 2, 3, 4, 5}
-	reverse(a[:])
-	fmt.Println(a) // "[5 4 3 2 1 0]"
+	a := []byte("0 I 2 3 4 Π")
+	reverse(a)
+	fmt.Println(string(a)) // "Π 4 3 2 I 0"
 }
 
-// reverse reverses a slice of ints in place.
-func reverse(s []int) {
-	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
-		s[i], s[j] = s[j], s[i]
+// reverse reverses the characters of a slice.
+func reverse(bytes []byte) {
+	runes := []rune(string(bytes))
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
 	}
+	copy(bytes, []byte(string(runes)))
 }
