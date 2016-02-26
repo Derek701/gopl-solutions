@@ -3,29 +3,35 @@ package main
 import (
 	"fmt"
 	"unicode"
+	"unicode/utf8"
 )
 
 // squashSpace returns a slice with adjacent spaces squashed.
 // The underlying array is modified during the call.
 func squashSpace(bytes []byte) []byte {
-	runes := []rune(string(bytes))
-	out := runes[:0]
+	var r rune
+	var l, pos int
+	out := bytes[:0]       // zero-length slice of original
 	isRunSquashed := false // Is the current run of spaces squashed?
-	for _, r := range runes {
+	for range string(bytes) {
+		r, l = utf8.DecodeRune(bytes[pos:])
 		if unicode.IsSpace(r) {
 			if isRunSquashed {
+				pos += l
 				continue
 			} else {
 				out = append(out, ' ')
 				isRunSquashed = true
 			}
 		} else {
-			out = append(out, r)
+			for i := 0; i < l; i++ {
+				out = append(out, bytes[pos+i])
+			}
 			isRunSquashed = false
 		}
+		pos += l
 	}
-	copy(bytes, []byte(string(out)))
-	return []byte(string(out))
+	return out
 }
 
 func main() {
