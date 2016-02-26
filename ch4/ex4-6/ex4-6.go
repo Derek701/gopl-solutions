@@ -24,6 +24,7 @@ func squashSpace(bytes []byte) []byte {
 			isRunSquashed = false
 		}
 	}
+	copy(bytes, []byte(string(out)))
 	return []byte(string(out))
 }
 
