@@ -32,11 +32,12 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	params := make(map[string]int)
-	params["cycles"] = 5   // number of complete x oscillator revolutions
-	params["size"] = 100   // image canvas covers [-size..+size]
-	params["nframes"] = 64 // number of animation frames
-	params["delay"] = 8    // delay between frames in 10ms units
+	params := map[string]int{
+		"cycles":  5,   // number of complete x oscillator revolutions
+		"size":    100, // image canvas covers [-size..+size]
+		"nframes": 64,  // number of animation frames
+		"delay":   8,   // delay between frames in 10ms units
+	}
 	for param, _ := range params {
 		if r.FormValue(param) != "" {
 			params[param], _ = strconv.Atoi(r.FormValue(param))
