@@ -14,7 +14,9 @@ func main() {
 	counts := make(map[rune]int)    // counts of Unicode characters
 	var utflen [utf8.UTFMax + 1]int // count of lengths of UTF-8 encodings
 	invalid := 0                    // count of invalid UTF-8 characters
+	cats := make(map[string]int)    // counts of Unicode categories
 
+	// In a terminal, use CTRL+Z at line start to signal EOF with ENTER.
 	in := bufio.NewReader(os.Stdin)
 	for {
 		r, n, err := in.ReadRune() // returns rune, nbytes, error
@@ -29,6 +31,20 @@ func main() {
 			invalid++
 			continue
 		}
+		switch {
+		case unicode.IsLetter(r):
+			cats["letter"]++
+		case unicode.IsDigit(r):
+			cats["digit"]++
+		case unicode.IsControl(r):
+			cats["control"]++
+		case unicode.IsMark(r):
+			cats["mark"]++
+		case unicode.IsPunct(r):
+			cats["punct"]++
+		case unicode.IsSymbol(r):
+			cats["symbol"]++
+		}
 		counts[r]++
 		utflen[n]++
 	}
@@ -41,6 +57,10 @@ func main() {
 		if i > 0 {
 			fmt.Printf("%d\t%d\n", i, n)
 		}
+	}
+	fmt.Print("\ncat\tcount\n")
+	for s, n := range cats {
+		fmt.Printf("%v\t%d\n", s, n)
 	}
 	if invalid > 0 {
 		fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
