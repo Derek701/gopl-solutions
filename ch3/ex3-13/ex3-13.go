@@ -1,4 +1,5 @@
-// Code snippet of compact const declarations for kB through YB.
+// Ex3-13 includes compact const declarations for kB through YB.
+package main
 
 const (
 	KB = 1000    // kilobyte  = 1000
@@ -10,3 +11,7 @@ const (
 	ZB = EB * KB // zettabyte = 1000⁷ (exceeds 1 << 64)
 	YB = ZB * KB // yottabyte = 1000⁸
 )
+
+func main() {
+	// Do nothing.
+}
