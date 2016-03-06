@@ -62,7 +62,5 @@ func main() {
 	for s, n := range cats {
 		fmt.Printf("%v\t%d\n", s, n)
 	}
-	if invalid > 0 {
-		fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
-	}
+	fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
 }
