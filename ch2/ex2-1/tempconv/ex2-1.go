@@ -3,10 +3,16 @@ package tempconv
 
 import "fmt"
 
+// Celsius scale temperature value.
 type Celsius float64
+
+// Fahrenheit scale temperature value.
 type Fahrenheit float64
+
+// Kelvin scale temperature value.
 type Kelvin float64
 
+// Temperature constants for each scale.
 const (
 	AbsoluteZeroC Celsius    = -273.15
 	FreezingC     Celsius    = 0
