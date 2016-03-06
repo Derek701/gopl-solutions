@@ -38,7 +38,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		"nframes": 64,  // number of animation frames
 		"delay":   8,   // delay between frames in 10ms units
 	}
-	for param, _ := range params {
+	for param := range params {
 		if r.FormValue(param) != "" {
 			params[param], _ = strconv.Atoi(r.FormValue(param))
 		}
