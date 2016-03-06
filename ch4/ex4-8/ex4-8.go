@@ -11,10 +11,10 @@ import (
 )
 
 func main() {
-	counts := make(map[rune]int)    // counts of Unicode characters
-	var utflen [utf8.UTFMax + 1]int // count of lengths of UTF-8 encodings
-	invalid := 0                    // count of invalid UTF-8 characters
-	cats := make(map[string]int)    // counts of Unicode categories
+	counts := make(map[rune]int) // counts of Unicode characters
+	var utflen [utf8.UTFMax]int  // count of lengths of UTF-8 encodings
+	invalid := 0                 // count of invalid UTF-8 characters
+	cats := make(map[string]int) // counts of Unicode categories
 
 	// In a terminal, use CTRL+Z at line start to signal EOF with ENTER.
 	in := bufio.NewReader(os.Stdin)
@@ -46,7 +46,7 @@ func main() {
 			cats["symbol"]++
 		}
 		counts[r]++
-		utflen[n]++
+		utflen[n-1]++
 	}
 	fmt.Printf("rune\tcount\n")
 	for c, n := range counts {
@@ -54,9 +54,7 @@ func main() {
 	}
 	fmt.Print("\nlen\tcount\n")
 	for i, n := range utflen {
-		if i > 0 {
-			fmt.Printf("%d\t%d\n", i, n)
-		}
+		fmt.Printf("%d\t%d\n", i+1, n)
 	}
 	fmt.Print("\ncat\tcount\n")
 	for s, n := range cats {
