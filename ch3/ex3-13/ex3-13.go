@@ -1,6 +1,6 @@
-// Ex3-13 includes compact const declarations for kB through YB.
 package main
 
+// Compact const declarations for kilobyte through yottabyte.
 const (
 	KB = 1000    // kilobyte  = 1000
 	MB = KB * KB // megabyte  = 1000²
