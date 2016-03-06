@@ -3,7 +3,10 @@ package wtconv
 
 import "fmt"
 
+// Pounds of weight value.
 type Pounds float64
+
+// Kilograms of weight value.
 type Kilograms float64
 
 func (lb Pounds) String() string    { return fmt.Sprintf("%g lb", lb) }

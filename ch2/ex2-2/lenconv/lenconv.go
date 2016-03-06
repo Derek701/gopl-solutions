@@ -3,7 +3,10 @@ package lenconv
 
 import "fmt"
 
+// Feet in length value.
 type Feet float64
+
+// Meters in length value.
 type Meters float64
 
 func (f Feet) String() string   { return fmt.Sprintf("%g ft", f) }
