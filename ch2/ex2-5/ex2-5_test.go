@@ -20,9 +20,9 @@ func BenchmarkPopCount2(b *testing.B) {
 	}
 }
 
-func BenchmarkPopCountByClearing(b *testing.B) {
+func BenchmarkByClearing(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		PopCountByClearing(0x1234567890ABCDEF)
+		ByClearing(0x1234567890ABCDEF)
 	}
 }
 
@@ -30,4 +30,4 @@ func BenchmarkPopCountByClearing(b *testing.B) {
 // $ go test -bench=.
 // BenchmarkPopCount-4                  200000000         6.90 ns/op
 // BenchmarkPopCount2-4                 100000000        19.0 ns/op
-// BenchmarkPopCountByClearing-4        50000000         31.4 ns/op
+// BenchmarkByClearing-4                50000000         31.4 ns/op

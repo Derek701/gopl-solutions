@@ -20,9 +20,9 @@ func BenchmarkPopCount2(b *testing.B) {
 	}
 }
 
-func BenchmarkPopCountByShifting(b *testing.B) {
+func BenchmarkByShifting(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		PopCountByShifting(0x1234567890ABCDEF)
+		ByShifting(0x1234567890ABCDEF)
 	}
 }
 
@@ -30,4 +30,4 @@ func BenchmarkPopCountByShifting(b *testing.B) {
 // $ go test -bench=.
 // BenchmarkPopCount-4                  200000000         6.97 ns/op
 // BenchmarkPopCount2-4                 100000000        18.2 ns/op
-// BenchmarkPopCountByShifting          20000000        118 ns/op
+// BenchmarkByShifting-4                20000000        118 ns/op
