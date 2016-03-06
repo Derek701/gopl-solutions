@@ -21,10 +21,10 @@ func PopCount(x uint64) int {
 		pc[byte(x>>(7*8))])
 }
 
-// Rewrite PopCount to use a loop instead of a single expression.
+// PopCount2 returns the population count (number of set bits) of x.
 func PopCount2(x uint64) int {
 	var sum byte
-	for i := uint(0); i < 8; i++ {
+	for i := uint(0); i < 8; i++ { // Use a loop instead of a single expression.
 		sum += pc[byte(x>>(i*8))]
 	}
 	return int(sum)
