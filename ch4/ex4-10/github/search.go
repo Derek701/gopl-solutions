@@ -11,10 +11,13 @@ import (
 // SearchIssues queries the GitHub issue tracker.
 func SearchIssues(terms []string) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(strings.Join(terms, " "))
-	resp, err := http.Get(IssuesURL + "?q=" + q)
+	req, err := http.NewRequest("GET", IssuesURL+"?q="+q, nil)
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set(
+		"Accept", "application/vnd.github.v3.text-match+json")
+	resp, err := http.DefaultClient.Do(req)
 
 	if resp.StatusCode != http.StatusOK {
 		resp.Body.Close()
