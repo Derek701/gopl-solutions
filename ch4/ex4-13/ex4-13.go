@@ -43,7 +43,7 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Printf("Found movie %#v (%s)\n", myMovie.Title, myMovie.Year)
-	if myMovie.Poster == "" {
+	if myMovie.Poster == "N/A" {
 		fmt.Print("Error: No poster image available.")
 		os.Exit(1)
 	}
