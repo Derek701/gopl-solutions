@@ -58,6 +58,8 @@ func main() {
 		log.Fatal(err)
 	}
 	if _, err := io.Copy(file, resp.Body); err != nil {
+		file.Close()
+		os.Remove(filename)
 		log.Fatal(err)
 	}
 	file.Close()
