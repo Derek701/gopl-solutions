@@ -57,7 +57,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	io.Copy(file, resp.Body)
+	if _, err := io.Copy(file, resp.Body); err != nil {
+		log.Fatal(err)
+	}
 	file.Close()
 	fmt.Println("Success!")
 }
